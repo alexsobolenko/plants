@@ -11,6 +11,7 @@ final class ReminderNormalizer extends AbstractApiDataNormalizer
     public const CONTEXT_TYPE_KEY = '_reminder';
     public const DEFAULT_TYPE = '_reminder.default';
     public const ID_ONLY_TYPE = '_reminder.id';
+    public const IN_PLANT_TYPE = '_reminder.in_plant';
 
     /**
      * @param mixed $data
@@ -42,12 +43,19 @@ final class ReminderNormalizer extends AbstractApiDataNormalizer
     {
         return match ($this->getType($context)) {
             self::ID_ONLY_TYPE => $object->getId()->toRfc4122(),
+            self::IN_PLANT_TYPE => [
+                'id' => $object->getId()->toRfc4122(),
+                'cycle' => $object->getCycle(),
+                'startExecution' => $object->getStartExecution()->format('Y-m-d H:i:s'),
+                'type' => $this->normalizer->normalize($object->getReminderType(), $format, $context),
+            ],
             default => [
                 'id' => $object->getId()->toRfc4122(),
-                'name' => $object->getCycle(),
-                'adoption_date' => $object->getStartExecution()->format('Y-m-d H:i:s'),
+                'cycle' => $object->getCycle(),
+                'startExecution' => $object->getStartExecution()->format('Y-m-d H:i:s'),
                 'user' => $this->normalizer->normalize($object->getOwner(), $format, $context),
                 'type' => $this->normalizer->normalize($object->getReminderType(), $format, $context),
+                'plant' => $this->normalizer->normalize($object->getPlant(), $format, $context),
             ],
         };
     }

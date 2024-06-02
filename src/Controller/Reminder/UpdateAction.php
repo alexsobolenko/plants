@@ -9,6 +9,7 @@ use App\Exception\ApiException;
 use App\Exception\AppException;
 use App\Normalizer\PlantNormalizer;
 use App\Normalizer\ReminderNormalizer;
+use App\Normalizer\ReminderTypeNormalizer;
 use App\Normalizer\UserNormalizer;
 use App\Repository\ReminderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,6 +46,7 @@ class UpdateAction extends AbstractController
         return $this->json($reminder, Response::HTTP_OK, [], [
             ReminderNormalizer::CONTEXT_TYPE_KEY => ReminderNormalizer::DEFAULT_TYPE,
             PlantNormalizer::CONTEXT_TYPE_KEY => PlantNormalizer::ID_ONLY_TYPE,
+            ReminderTypeNormalizer::CONTEXT_TYPE_KEY => ReminderTypeNormalizer::ID_ONLY_TYPE,
             UserNormalizer::CONTEXT_TYPE_KEY => UserNormalizer::ID_ONLY_TYPE,
         ]);
     }

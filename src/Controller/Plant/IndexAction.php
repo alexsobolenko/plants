@@ -36,10 +36,10 @@ class IndexAction extends AbstractController
         }
 
         return $this->json($plants, Response::HTTP_OK, [], [
-            PlantNormalizer::CONTEXT_TYPE_KEY => PlantNormalizer::DEFAULT_TYPE,
+            PlantNormalizer::CONTEXT_TYPE_KEY => PlantNormalizer::IN_LIST_TYPE,
             LocationNormalizer::CONTEXT_TYPE_KEY => LocationNormalizer::ID_ONLY_TYPE,
             UserNormalizer::CONTEXT_TYPE_KEY => UserNormalizer::ID_ONLY_TYPE,
-            PlantTypeNormalizer::CONTEXT_TYPE_KEY => PlantNormalizer::ID_ONLY_TYPE,
+            PlantTypeNormalizer::CONTEXT_TYPE_KEY => PlantTypeNormalizer::ID_ONLY_TYPE,
         ]);
     }
 }

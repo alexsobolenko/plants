@@ -11,6 +11,7 @@ final class PlantNormalizer extends AbstractApiDataNormalizer
     public const CONTEXT_TYPE_KEY = '_plant';
     public const DEFAULT_TYPE = '_plant.default';
     public const ID_ONLY_TYPE = '_plant.id';
+    public const IN_LIST_TYPE = '_plant.in_list';
 
     /**
      * @param mixed $data
@@ -42,6 +43,17 @@ final class PlantNormalizer extends AbstractApiDataNormalizer
     {
         return match ($this->getType($context)) {
             self::ID_ONLY_TYPE => $object->getId()->toRfc4122(),
+            self::IN_LIST_TYPE => [
+                'id' => $object->getId()->toRfc4122(),
+                'name' => $object->getName(),
+                'adoption_date' => $object->getAdoptionDate()->format('Y-m-d'),
+                'description' => $object->getDescription(),
+                'image' => is_resource($object->getImage()) ? stream_get_contents($object->getImage()) : $object->getImage(),
+                'nickname' => $object->getNickname(),
+                'user' => $this->normalizer->normalize($object->getOwner(), $format, $context),
+                'location' => $this->normalizer->normalize($object->getLocation(), $format, $context),
+                'type' => $this->normalizer->normalize($object->getPlantType(), $format, $context),
+            ],
             default => [
                 'id' => $object->getId()->toRfc4122(),
                 'name' => $object->getName(),

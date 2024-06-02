@@ -9,6 +9,8 @@ use App\Exception\AppException;
 use App\Normalizer\LocationNormalizer;
 use App\Normalizer\PlantNormalizer;
 use App\Normalizer\PlantTypeNormalizer;
+use App\Normalizer\ReminderNormalizer;
+use App\Normalizer\ReminderTypeNormalizer;
 use App\Normalizer\UserNormalizer;
 use App\Repository\PlantRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -41,6 +43,8 @@ class DetailsAction extends AbstractController
             LocationNormalizer::CONTEXT_TYPE_KEY => LocationNormalizer::ID_ONLY_TYPE,
             UserNormalizer::CONTEXT_TYPE_KEY => UserNormalizer::ID_ONLY_TYPE,
             PlantTypeNormalizer::CONTEXT_TYPE_KEY => PlantTypeNormalizer::ID_ONLY_TYPE,
+            ReminderNormalizer::CONTEXT_TYPE_KEY => ReminderNormalizer::IN_PLANT_TYPE,
+            ReminderTypeNormalizer::CONTEXT_TYPE_KEY => ReminderTypeNormalizer::ID_ONLY_TYPE,
         ]);
     }
 }
