@@ -139,6 +139,10 @@ class PlantRepository extends ServiceEntityRepository
     {
         $plant = $this->get($id);
         $this->checkIsUserOwner($plant->getOwner());
+        if (!$plant->getReminders()->isEmpty()) {
+            throw new ForbiddenException('Plant can not be deleted while reminders exist');
+        }
+
         $this->getEntityManager()->remove($plant);
         $this->getEntityManager()->flush();
     }
