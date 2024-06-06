@@ -41,6 +41,7 @@ class PlantRepository extends ServiceEntityRepository
         if (!$plant instanceof Plant) {
             throw new NotFoundException('Plant not found');
         }
+        $this->checkIsUserOwner($plant->getOwner());
 
         return $plant;
     }
@@ -138,7 +139,6 @@ class PlantRepository extends ServiceEntityRepository
     public function delete(mixed $id): void
     {
         $plant = $this->get($id);
-        $this->checkIsUserOwner($plant->getOwner());
         if (!$plant->getReminders()->isEmpty()) {
             throw new ForbiddenException('Plant can not be deleted while reminders exist');
         }

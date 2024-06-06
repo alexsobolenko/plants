@@ -39,6 +39,7 @@ class LocationRepository extends ServiceEntityRepository
         if (!$location instanceof Location) {
             throw new NotFoundException('Location not found');
         }
+        $this->checkIsUserOwner($location->getOwner());
 
         return $location;
     }
@@ -91,7 +92,6 @@ class LocationRepository extends ServiceEntityRepository
     public function delete(mixed $id): void
     {
         $location = $this->get($id);
-        $this->checkIsUserOwner($location->getOwner());
         if (!$location->getPlants()->isEmpty()) {
             throw new ForbiddenException('You cannot delete locations that have a plant');
         }

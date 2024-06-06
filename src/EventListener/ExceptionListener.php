@@ -18,27 +18,24 @@ final class ExceptionListener
     public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
-        $request = $event->getRequest();
-        if (in_array('application/json', $request->getAcceptableContentTypes(), true)) {
-            switch (true) {
-                case $exception instanceof UnprocessableEntityHttpException:
-                    $code = Response::HTTP_UNPROCESSABLE_ENTITY;
-                    $error = explode(PHP_EOL, $exception->getMessage())[0];
-                    break;
-                case $exception instanceof HttpExceptionInterface:
-                    $code = $exception->getStatusCode();
-                    $error = $exception->getMessage();
-                    break;
-                default:
-                    $code = $exception->getCode() ?: Response::HTTP_BAD_REQUEST;
-                    $error = $exception->getMessage();
-            }
-            $data = [
-                'code' => $code,
-                'message' => $error ?: 'Fatal Error',
-            ];
-            $json = json_encode($data, JSON_UNESCAPED_UNICODE);
-            $event->setResponse(new JsonResponse($json, $code, [], true));
+        switch (true) {
+            case $exception instanceof UnprocessableEntityHttpException:
+                $code = Response::HTTP_UNPROCESSABLE_ENTITY;
+                $error = explode(PHP_EOL, $exception->getMessage())[0];
+                break;
+            case $exception instanceof HttpExceptionInterface:
+                $code = $exception->getStatusCode();
+                $error = $exception->getMessage();
+                break;
+            default:
+                $code = $exception->getCode() ?: Response::HTTP_BAD_REQUEST;
+                $error = $exception->getMessage();
         }
+        $data = [
+            'code' => $code,
+            'message' => $error ?: 'Fatal Error',
+        ];
+        $json = json_encode($data, JSON_UNESCAPED_UNICODE);
+        $event->setResponse(new JsonResponse($json, $code, [], true));
     }
 }

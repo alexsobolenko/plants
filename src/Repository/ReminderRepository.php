@@ -42,6 +42,7 @@ class ReminderRepository extends ServiceEntityRepository
         if (!$reminder instanceof Reminder) {
             throw new NotFoundException('Reminder not found');
         }
+        $this->checkIsUserOwner($reminder->getOwner());
 
         return $reminder;
     }
@@ -115,7 +116,6 @@ class ReminderRepository extends ServiceEntityRepository
     public function delete(mixed $id): void
     {
         $reminder = $this->get($id);
-        $this->checkIsUserOwner($reminder->getOwner());
         $this->getEntityManager()->remove($reminder);
         $this->getEntityManager()->flush();
     }

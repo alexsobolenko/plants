@@ -17,7 +17,7 @@ trait SecurityTrait
     {
         $user = $this->security->getUser();
         if (!$user instanceof User) {
-            throw new ForbiddenException('User is not allowed to access this resource');
+            throw new ForbiddenException('User not authorized');
         }
 
         return $user;
